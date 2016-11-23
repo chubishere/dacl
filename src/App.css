@@ -1,0 +1,27 @@
+.app {
+}
+
+.app table {
+	border-collapse:collapse;
+}
+
+.app table td:not(.table-inside) {
+	padding: 0.5em;
+	border: 1px solid gray;
+}
+
+.app table td.table-inside {
+	padding: 0;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.eq-width {
+	width: 100px;
+}
+
+[rowspan]{
+	vertical-align: bottom;
+}
