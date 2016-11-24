@@ -14,12 +14,18 @@
 	padding: 0;
 }
 
-.text-center {
-	text-align: center;
+.app table td.table-inside table {
+	position: relative;
+	right: -1px;
+	bottom: -1px;
 }
 
-.eq-width {
-	width: 100px;
+.app table td.table-inside table td{
+	border-top: 0;
+	border-left: 0;
+}
+
+.app table table td {
 }
 
 [rowspan]{

@@ -2,4 +2,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+	font-size: 13px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.eq-width {
+	width: 100px;
 }
