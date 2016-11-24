@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Graph from './Graph.js';
+import {ObjectEach} from './Helpers.js';
 import './App.css';
 
 class App extends Component {
@@ -68,7 +70,7 @@ class App extends Component {
 						<td className="eq-width header-observer">Observer</td>
 					</tr>
 
-					{this.trHash(this.state.projects, (p)=>
+					{ObjectEach(this.state.projects, (p)=>
 					<tr>
 						<td>
 							{p.title} 
@@ -87,7 +89,7 @@ class App extends Component {
 						</td>
 						<td colSpan="4" className="table-inside">
 							<table>
-							{this.trHash(p.studies, (s)=>
+							{ObjectEach(p.studies, (s)=>
 								<tr>
 									<td className="eq-width">{s.title}</td>
 									{['admin', 'researcher', 'observer'].map((r)=>
