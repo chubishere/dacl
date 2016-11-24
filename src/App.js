@@ -44,14 +44,6 @@ class App extends Component {
 		return this.state.projects[project].studies[study].roles[role];
 	}
 
-	trHash(obj, callback){
-		let items = [];
-		Object.keys( obj ).map((item)=>{
-			items.push( callback( {title: item, studies: obj[item]['studies'] } ) );
-		})
-		return items
-	}
-
   render() {
     return (
       <div className="app">
