@@ -1,0 +1,24 @@
+.graph {
+	border: 1px solid gray;
+	line-height: 1.5;
+}
+
+.graph-block {
+	background: #ccc;
+	padding: 20px;
+}
+
+.graph-block
+.graph-block {
+	border: 1px solid white;
+	position: relative;
+	left: -6px;
+	padding: 1px 5px 5px 5px;
+	margin-top: 1px;
+	margin-bottom: 5px;
+}
+
+.graph ul,
+.graph ol{
+	list-style: none;
+}

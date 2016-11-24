@@ -12,3 +12,7 @@ body {
 .eq-width {
 	width: 100px;
 }
+
+ul, ol {
+	margin: 0;
+}
