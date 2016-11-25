@@ -5,12 +5,12 @@ export default {
 			clients: [
 				{
 					id: 1,
-					name: 'C1',
+					name: 'A',
 					password: 'fredpass',
 					projects: [
 						{
 							id: 1,
-							title: 'P1',
+							title: 'A',
 							access_any_study: false,
 							studies: [
 								{ id: 1, title: 'A', roles: [] },
@@ -19,7 +19,7 @@ export default {
 						},
 						{
 							id: 2,
-							title: 'P2',
+							title: 'B',
 							studies: [
 								{ id: 1, title: 'C', roles: []},
 								{ id: 2, title: 'D', roles: []},

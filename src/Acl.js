@@ -20,7 +20,7 @@ class Acl extends Component {
 					</tr>
 
 					<tr>
-						<td className="eq-width text-top-cell" rowSpan="3">C1</td>
+						<td className="eq-width text-top-cell" rowSpan="3">A</td>
 					</tr>
 
 					{this.props.user.clients[0].projects.map( (p) =>

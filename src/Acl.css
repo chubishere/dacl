@@ -22,6 +22,6 @@
 	vertical-align: top;
 }
 
-.acl [rowspan]{
+.acl [rowspan]:not(.text-top-cell){
 	vertical-align: bottom;
 }
