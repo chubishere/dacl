@@ -9,6 +9,10 @@ body {
 	text-align: center;
 }
 
+.text-top-cell {
+	vertical-align: top;
+}
+
 .eq-width {
 	width: 100px;
 }

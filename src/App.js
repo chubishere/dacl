@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Graph from './Graph.js';
+import Acl from './Acl.js';
 import './App.css';
 
 class App extends Component {
@@ -77,67 +78,14 @@ class App extends Component {
   render() {
     return (
       <div className="app">
+
 				<Graph className="graph" user={this.state.user}/>
-				<table className="acl">
-				<tbody>
-					<tr>
-						<td rowSpan="2">Client</td>
-						<td rowSpan="2">Project</td>
-						<td rowSpan="2" className="eq-width header-study">Study</td>
-						<td colSpan="3" className="text-center">Roles</td>
-					</tr>
-					<tr>
-						<td className="eq-width header-admin">Admin</td>
-						<td className="eq-width header-researcher">Researcher</td>
-						<td className="eq-width header-observer">Observer</td>
-					</tr>
 
-					<tr>
-						<td className="eq-width client" rowSpan="3">C1</td>
-					</tr>
+				<Acl user={this.state.user}
+					onRoleChange={this.onRoleChange.bind(this)}
+					lookup={this.lookup.bind(this)}
+				/>
 
-					{this.state.user.clients[0].projects.map( (p) =>
-					<tr key={p.title}>
-						<td>
-							{p.title} 
-							<br/>
-
-							<label>
-							<input type="checkbox" onClick={this.onBlock.bind(this, p)} value={p.blocked}/>
-							Block
-							</label>
-							<br/>
-
-							<label>
-							<input type="checkbox" onClick={this.onDelete.bind(this, p)} value={p.blocked}/>
-							Delete
-							</label>
-						</td>
-						<td colSpan="4" className="table-inside">
-							<table>
-							<tbody>
-							{p.studies.map( (s) =>
-								<tr key={s.title}>
-									<td className="eq-width">{s.title}</td>
-									{['admin', 'researcher', 'observer'].map((r)=>
-										<td className="eq-width" key={r}>
-											<input 
-												type="checkbox" 
-												onClick={this.onRoleChange.bind(this, p.title, s.title, r)} 
-												checked={this.lookup(p.title, s.title, r)}
-											/>
-										</td>
-									)}
-								</tr>
-							)}
-							</tbody>
-							</table>
-						</td>
-					</tr>
-					)}
-
-				</tbody>
-				</table>
       </div>
     );
   }
