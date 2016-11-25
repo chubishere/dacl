@@ -28,6 +28,10 @@ class Acl extends Component {
 						<td className="text-top-cell">
 							{p.title} 
 							<br/>
+							<input type="checkbox" 
+								onClick={this.props.onRoleChange.bind(this, p.title, 'project')}
+								checked={this.props.lookup(p.title, 'project')} 
+							/>
 
 						</td>
 						<td colSpan="4" className="table-inside">

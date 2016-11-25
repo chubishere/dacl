@@ -1,0 +1,13 @@
+.users-list ul{
+	padding: 0;
+}
+
+.users-list ul li{
+	list-style: none;
+	padding: 5px;
+	margin: 0;
+}
+
+.users-list li:nth-child(2n+1){
+	background: #ccc;
+}

@@ -58,6 +58,12 @@ class Graph extends Component {
 		let pids = [];
 		let projects = _.cloneDeep( client.projects );
 		_.each( projects, (p) =>{
+			if( p.access_any_study ){
+				pids.push( {
+					pid: [client.id, p.id, 0].join('-'),
+					roles: []
+				} );
+			}
 			// remove studies without role allocations
 			p.studies = p.studies.filter( (s) => s.roles.length );
 			// create a pid for studies with role allocations

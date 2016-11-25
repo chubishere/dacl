@@ -2,42 +2,15 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Graph from './Graph.js';
 import Acl from './Acl.js';
+import UsersList from './UsersList.js';
+import DataUsers from './DataUsers.js';
 import './App.css';
 
 class App extends Component {
 
 	constructor(props){
 		super(props);
-		this.state = {
-			user: {
-				email: 'fred@dad.com',
-				clients: [
-					{
-						id: 1,
-						name: 'C1',
-						password: 'fredpass',
-						projects: [
-							{
-								id: 1,
-								title: 'P1',
-								studies: [
-									{ id: 1, title: 'A', roles: [] },
-									{ id: 2, title: 'B', roles: [] },
-								]
-							},
-							{
-								id: 2,
-								title: 'P2',
-								studies: [
-									{ id: 1, title: 'C', roles: []},
-									{ id: 2, title: 'D', roles: []},
-								]
-							}
-						]
-					}
-				]
-			}
-		}
+		this.state = DataUsers;
 	}
 
 	onBlock(project){
@@ -55,8 +28,15 @@ class App extends Component {
 		let state = JSON.parse( JSON.stringify( this.state ) );
 
 		// update state
-		let target = state.user.clients[0];
+		let target = state.users[0].clients[0];
 		let p = _.findIndex( target.projects, (o) => o.title === project );
+
+		if( study === 'project' ){
+			target.projects[p].access_any_study = !target.projects[p].access_any_study;
+			this.setState(state);
+			return;
+		}
+
 		let s = _.findIndex( target.projects[p].studies, (o) => o.title === study )
 		let r = target.projects[p].studies[s].roles;
 		let rIndex = r.indexOf( role );
@@ -70,21 +50,32 @@ class App extends Component {
 	}
 
 	lookup(project, study, role){
-		var p = _.find( this.state.user.clients[0].projects, (o) => o.title === project );
-		var s = _.find( p.studies, (o) => o.title === study );
-		return s.roles.indexOf(role) !== -1;
+		if( project ) {
+			var p = _.find( this.state.users[0].clients[0].projects, (o) => o.title === project );
+
+			if( study === 'project' ){
+				return p.access_any_study;
+			} else {
+				var s = _.find( p.studies, (o) => o.title === study );
+				return s.roles.indexOf(role) !== -1;
+			}
+		}
+		return;
 	}
 
   render() {
     return (
       <div className="app">
 
-				<Graph className="graph" user={this.state.user}/>
+				<Graph className="graph" user={this.state.users[0]}/>
 
-				<Acl user={this.state.user}
+				<div>
+				<UsersList users={this.state.users} />
+				<Acl user={this.state.users[0]}
 					onRoleChange={this.onRoleChange.bind(this)}
 					lookup={this.lookup.bind(this)}
 				/>
+				</div>
 
       </div>
     );
