@@ -23,22 +23,29 @@ class App extends Component {
 		//this.setState(this.state);
 	}
 
-	onRoleChange(project, study, role){
+	onRoleChange(project, target, role){
 		// copy state
 		let state = JSON.parse( JSON.stringify( this.state ) );
 
 		// update state
-		let target = state.users[0].clients[0];
-		let p = _.findIndex( target.projects, (o) => o.title === project );
+		let client = state.users[0].clients[0];
 
-		if( study === 'project' ){
-			target.projects[p].access_any_study = !target.projects[p].access_any_study;
+		if( target === 'client' ){
+			client.access_all = !client.access_all;
 			this.setState(state);
 			return;
 		}
 
-		let s = _.findIndex( target.projects[p].studies, (o) => o.title === study )
-		let r = target.projects[p].studies[s].roles;
+		let p = _.findIndex( client.projects, (o) => o.title === project );
+
+		if( target === 'project' ){
+			client.projects[p].access_all = !client.projects[p].access_all;
+			this.setState(state);
+			return;
+		}
+
+		let s = _.findIndex( client.projects[p].studies, (o) => o.title === target )
+		let r = client.projects[p].studies[s].roles;
 		let rIndex = r.indexOf( role );
 		if( rIndex >= 0 ) { 			//if role exists, remove it
 			r.splice( rIndex, 1 );
@@ -49,14 +56,18 @@ class App extends Component {
 		this.setState(state);
 	}
 
-	lookup(project, study, role){
-		if( project ) {
-			var p = _.find( this.state.users[0].clients[0].projects, (o) => o.title === project );
+	lookup(project, target, role){
+		var c = this.state.users[0].clients[0];
 
-			if( study === 'project' ){
-				return p.access_any_study;
+		if( project ) {
+			var p = _.find( c.projects, (o) => o.title === project );
+
+			if( target === 'client' ){
+				return c.access_all;
+			} else if( target === 'project' ){
+				return p.access_all;
 			} else {
-				var s = _.find( p.studies, (o) => o.title === study );
+				var s = _.find( p.studies, (o) => o.title === target );
 				return s.roles.indexOf(role) !== -1;
 			}
 		}

@@ -20,7 +20,13 @@ class Acl extends Component {
 					</tr>
 
 					<tr>
-						<td className="eq-width text-top-cell" rowSpan="3">A</td>
+						<td className="eq-width text-top-cell" rowSpan="3">
+							A
+							<input type="checkbox" 
+								onClick={this.props.onRoleChange.bind(this, 'A', 'client')}
+								checked={this.props.lookup('A', 'client')} 
+							/>
+						</td>
 					</tr>
 
 					{this.props.user.clients[0].projects.map( (p) =>

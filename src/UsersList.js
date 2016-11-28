@@ -9,7 +9,7 @@ class UsersList extends Component {
 			let hasRole = false;
 			_.each( u.clients, (c) => {
 				_.each( c.projects, (p) => {
-					if( p.access_any_study )
+					if( p.access_all )
 						hasRole = true; 
 					_.each( p.studies, (s) => {
 						if( s.roles.length )

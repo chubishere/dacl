@@ -7,11 +7,12 @@ export default {
 					id: 1,
 					name: 'A',
 					password: 'fredpass',
+					access_all: false,
 					projects: [
 						{
 							id: 1,
 							title: 'A',
-							access_any_study: false,
+							access_all: false,
 							studies: [
 								{ id: 1, title: 'A', roles: [] },
 								{ id: 2, title: 'B', roles: [] },

@@ -56,14 +56,27 @@ class Graph extends Component {
 	 */
 	getPidRoles(client){
 		let pids = [];
+
+		// client
+		if( client.access_all ){
+			pids.push( {
+				pid: [client.id, 0, 0].join('-'),
+				roles: []
+			} );
+		}
+
+		// projects
 		let projects = _.cloneDeep( client.projects );
 		_.each( projects, (p) =>{
-			if( p.access_any_study ){
+
+			if( p.access_all ){
 				pids.push( {
 					pid: [client.id, p.id, 0].join('-'),
 					roles: []
 				} );
 			}
+
+			// studies
 			// remove studies without role allocations
 			p.studies = p.studies.filter( (s) => s.roles.length );
 			// create a pid for studies with role allocations
@@ -71,6 +84,7 @@ class Graph extends Component {
 				let pid = [client.id, p.id, s.id].join('-');
 				pids.push( {pid: pid, roles: s.roles} );
 			})
+
 		});
 		return pids;
 	}
