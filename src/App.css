@@ -7,14 +7,17 @@
 	flex: 1 1 auto;
 }
 
-.app > *:first-child{
+.app .app__left{
 	margin-right: 5px;
-}
-
-.app > *:last-child{
-	margin-left: 5px;
 }
 
 .app table {
 	border-collapse:collapse;
+}
+
+.app .app__right {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	padding: 10px;
 }

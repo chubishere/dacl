@@ -95,15 +95,15 @@ class App extends Component {
     return (
       <div className="app">
 
-				<Graph className="graph" user={this.state.users[0]}/>
+				<Graph className="graph app__left" user={this.state.users[0]}/>
 
-				<div>
-				<UsersList users={this.state.users} />
-				<Acl user={this.state.users[0]}
-					roles={this.state.roles}
-					onRoleChange={this.onRoleChange.bind(this)}
-					lookup={this.lookup.bind(this)}
-				/>
+				<div className="app__right">
+					<UsersList users={this.state.users} />
+					<Acl user={this.state.users[0]}
+						roles={this.state.roles}
+						onRoleChange={this.onRoleChange.bind(this)}
+						lookup={this.lookup.bind(this)}
+					/>
 				</div>
 
       </div>
