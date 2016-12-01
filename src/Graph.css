@@ -1,8 +1,18 @@
 .graph {
 	border: 1px solid gray;
+	border: none;
 	line-height: 1.5;
 	padding: 20px;
-	background: #ccc;
+	background: #ddd;
+	width: 500px;
+	margin-top: -10px;
+	margin-left: -10px;
+	height: 100vh;
+}
+
+.graph h1{
+	font-size: 18px;
+	font-weight: normal;
 }
 
 .graph-block {

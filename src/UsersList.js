@@ -8,8 +8,11 @@ class UsersList extends Component {
 		let users = this.props.users.filter( (u) => {
 			let hasRole = false;
 			_.each( u.clients, (c) => {
+				if( (c.roles || []).length ) {
+					hasRole = true; 
+				}
 				_.each( c.projects, (p) => {
-					if( p.access_all )
+					if( (p.roles || []).length )
 						hasRole = true; 
 					_.each( p.studies, (s) => {
 						if( s.roles.length )
@@ -25,7 +28,7 @@ class UsersList extends Component {
   render() {
     return (
 			<div className="users-list">
-				Users:
+				<h1>Users:</h1>
 				<ul>
 				{this.getHavingRoles.bind(this)().map( (u) => 
 					<li key={u.email}>{u.email}</li>

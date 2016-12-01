@@ -7,12 +7,12 @@ export default {
 					id: 1,
 					name: 'A',
 					password: 'fredpass',
-					access_all: false,
+					roles: [],
 					projects: [
 						{
 							id: 1,
 							title: 'A',
-							access_all: false,
+							roles: [],
 							studies: [
 								{ id: 1, title: 'A', roles: [] },
 								{ id: 2, title: 'B', roles: [] },
@@ -21,6 +21,7 @@ export default {
 						{
 							id: 2,
 							title: 'B',
+							roles: [],
 							studies: [
 								{ id: 1, title: 'C', roles: []},
 								{ id: 2, title: 'D', roles: []},

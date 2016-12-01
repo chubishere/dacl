@@ -7,6 +7,14 @@
 	flex: 1 1 auto;
 }
 
+.app > *:first-child{
+	margin-right: 5px;
+}
+
+.app > *:last-child{
+	margin-left: 5px;
+}
+
 .app table {
 	border-collapse:collapse;
 }

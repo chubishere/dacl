@@ -1,27 +1,67 @@
-.acl td:not(.table-inside) {
-	padding: 10px;
-	border: 1px solid gray;
+.acl {
+	width: 100%;
 }
 
-.acl td.table-inside {
-	padding: 0;
+.acl label {
+	display: block;
 }
 
-.acl td.table-inside table {
-	position: relative;
-	right: -1px;
-	bottom: -1px;
+.acl h1 {
+	font-size: inherit;
+	margin-bottom: 4px;
 }
 
-.acl td.table-inside table td{
-	border-top: 0;
-	border-left: 0;
+.acl__client,
+.acl__project,
+.acl__study{
+	border: 1px solid #eee;
 }
 
-.acl .client{
-	vertical-align: top;
+.acl__client,
+.acl__study{
+	border-right: none;
 }
 
-.acl [rowspan]:not(.text-top-cell){
-	vertical-align: bottom;
+.acl__project:not(:last-child),
+.acl__study{
+	border-bottom: none;
+}
+
+.acl__study:not(:last-child){
+	border-top: none;
+}
+
+.acl,
+.acl__clients,
+.acl__client,
+.acl__projects,
+.acl__project,
+.acl__studies{
+	display: flex;
+}
+
+.acl > *,
+.acl__clients > *,
+.acl__project > *,
+.acl__studies > * {
+	flex: 1 1 auto;
+}
+
+.acl__client,
+.acl__projects,
+.acl__studies {
+	flex-direction: column;
+}
+
+.acl__client,
+.acl__project__details,
+.acl__study__details{
+	padding: 5px 10px;
+}
+
+.acl .eq-width {
+	width: 80px;
+}
+
+.eq-width.eq-width-wide {
 }

@@ -7,7 +7,7 @@ class Graph extends Component {
 	buildUser(user){
 		return (
 			<div className="graph-block">
-				User<br/>
+				<h1>User</h1>
 				<ul>
 					<li>Email: {user.email}</li>
 					<li>
@@ -21,7 +21,7 @@ class Graph extends Component {
 	buildAccounts(user){
 		return (
 			<div className="graph-block">
-				Accounts
+				<h1>Accounts</h1>
 				<ol>
 					{user.clients.map( (c) =>
 					<li key={c.id}>
@@ -38,7 +38,7 @@ class Graph extends Component {
 	buildProfiles(user, client){
 		return (
 			<div className="graph-block">
-				Profiles
+				<h1>Profiles</h1>
 				<ol>
 				{this.getPidRoles(client).map( (i) =>
 					<li className="graph-block" key={i.pid}>
@@ -58,10 +58,10 @@ class Graph extends Component {
 		let pids = [];
 
 		// client
-		if( client.access_all ){
+		if( client.roles.length ){
 			pids.push( {
 				pid: [client.id, 0, 0].join('-'),
-				roles: []
+				roles: client.roles
 			} );
 		}
 
@@ -69,10 +69,10 @@ class Graph extends Component {
 		let projects = _.cloneDeep( client.projects );
 		_.each( projects, (p) =>{
 
-			if( p.access_all ){
+			if( (p.roles || [] ).length ){
 				pids.push( {
 					pid: [client.id, p.id, 0].join('-'),
-					roles: []
+					roles: p.roles
 				} );
 			}
 

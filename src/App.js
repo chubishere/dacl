@@ -31,7 +31,13 @@ class App extends Component {
 		let client = state.users[0].clients[0];
 
 		if( target === 'client' ){
-			client.access_all = !client.access_all;
+			client.roles = (client.roles || []);
+			let index = client.roles.indexOf( role );
+			if( index === -1 ) {
+				client.roles.push( role );
+			}else{
+				client.roles.splice( index, 1 );
+			}
 			this.setState(state);
 			return;
 		}
@@ -39,7 +45,13 @@ class App extends Component {
 		let p = _.findIndex( client.projects, (o) => o.title === project );
 
 		if( target === 'project' ){
-			client.projects[p].access_all = !client.projects[p].access_all;
+			client.projects[p].roles = (client.projects[p].roles || []);
+			let index = client.projects[p].roles.indexOf( role );
+			if( index === -1 ) {
+				client.projects[p].roles.push( role );
+			}else{
+				client.projects[p].roles.splice( index, 1 );
+			}
 			this.setState(state);
 			return;
 		}
@@ -58,14 +70,15 @@ class App extends Component {
 
 	lookup(project, target, role){
 		var c = this.state.users[0].clients[0];
+		if( target === 'client' ){
+			return (c.roles || [] ).indexOf( role ) > -1;
+		}
 
 		if( project ) {
 			var p = _.find( c.projects, (o) => o.title === project );
 
-			if( target === 'client' ){
-				return c.access_all;
-			} else if( target === 'project' ){
-				return p.access_all;
+			if( target === 'project' ){
+				return (p.roles || []).indexOf( role ) > -1;
 			} else {
 				var s = _.find( p.studies, (o) => o.title === target );
 				return s.roles.indexOf(role) !== -1;

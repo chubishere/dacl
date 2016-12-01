@@ -1,13 +1,25 @@
+.users-list{
+	border: 1px solid #ccc;
+	margin-bottom: 10px;
+	height: 50vh;
+}
+
+.users-list h1{
+	font-size: 18px;
+	font-weight: normal;
+	padding: 12px;
+}
+
 .users-list ul{
 	padding: 0;
 }
 
 .users-list ul li{
 	list-style: none;
-	padding: 5px;
+	padding: 12px;
 	margin: 0;
 }
 
 .users-list li:nth-child(2n+1){
-	background: #ccc;
+	background: #eee;
 }
