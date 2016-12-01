@@ -17,6 +17,29 @@ class App extends Component {
 		}
 	}
 
+  render() {
+    return (
+      <div className="app">
+
+				<div className="settings">
+					<label>Roles:</label><input type="text" defaultValue={this.getRolesText()} onKeyUp={this.onRoleDefinitionChange.bind(this)}/>
+				</div>
+
+				<Graph className="graph app__left" user={this.state.users[0]}/>
+
+				<div className="app__right">
+					<UsersList users={this.state.users} />
+					<Acl user={this.state.users[0]}
+						roles={this.state.roles}
+						onRoleChange={this.onRoleChange.bind(this)}
+						lookup={this.lookup.bind(this)}
+					/>
+				</div>
+
+      </div>
+    );
+  }
+
 	onBlock(project){
 		//this.state.projects[project].blocked = !this.state.projects[project].blocked;
 		//this.setState(this.state);
@@ -91,24 +114,13 @@ class App extends Component {
 		return;
 	}
 
-  render() {
-    return (
-      <div className="app">
+	getRolesText(){
+		return this.state.roles.join(', ');
+	}
 
-				<Graph className="graph app__left" user={this.state.users[0]}/>
-
-				<div className="app__right">
-					<UsersList users={this.state.users} />
-					<Acl user={this.state.users[0]}
-						roles={this.state.roles}
-						onRoleChange={this.onRoleChange.bind(this)}
-						lookup={this.lookup.bind(this)}
-					/>
-				</div>
-
-      </div>
-    );
-  }
+	onRoleDefinitionChange(a, b, c){
+		this.setState( {'roles': a.target.value.replace(/[^-_a-z,]*/m, '').split(',') } );
+	}
 }
 
 export default App;
