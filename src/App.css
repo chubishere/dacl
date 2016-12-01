@@ -7,7 +7,7 @@
 	flex: 1 1 auto;
 }
 
-.app .app__left{
+.app .app__left {
 	margin-right: 5px;
 }
 
@@ -20,4 +20,24 @@
 	flex-direction: column;
 	height: 100vh;
 	padding: 10px;
+}
+
+.settings {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.settings input {
+	padding: 3px 5px;
+	width: 300px;
+	border: none;
+}
+
+.settings label,
+.settings input[type=text] {
+	font-size: 12px;
+	padding: 3px 5px;
+	line-height: 20px;
 }

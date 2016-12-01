@@ -60,6 +60,10 @@
 	padding: 5px 10px;
 }
 
+.acl__projects {
+	flex: 2 0 auto;
+}
+
 .acl .eq-width {
 	width: 80px;
 }

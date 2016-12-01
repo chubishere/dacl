@@ -2,11 +2,9 @@
 	border: 1px solid gray;
 	border: none;
 	line-height: 1.5;
-	padding: 20px;
+	padding: 10px 15px;
 	background: #ddd;
 	width: 500px;
-	margin-top: -10px;
-	margin-left: -10px;
 	height: 100vh;
 }
 
@@ -17,15 +15,25 @@
 
 .graph-block {
 	border: 1px solid white;
-	padding: 1px 5px 5px 5px;
+	padding: 1px 5px 5px 15px;
+	background: #dcf1f5;
 }
 
-.graph-block
-.graph-block {
+.graph-block .graph-block {
 	position: relative;
-	left: -6px;
-	margin-top: 1px;
+	left: -17px;
+	margin-top: 5px;
 	margin-bottom: 5px;
+	background: #e7d9f3;
+}
+
+.graph-block .graph-block .graph-block {
+	background: #fbe0e0;
+}
+
+.graph-block .graph-block .graph-block .graph-block{
+	background: #fffadd;
+	padding: 9px 10px;
 }
 
 .graph ul,
