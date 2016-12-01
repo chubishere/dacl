@@ -11,7 +11,7 @@ class Acl extends Component {
 					<div className="acl__client">
 						<div className="acl__client__details">
 							<h1>Client A</h1>
-							{['admin', 'researcher', 'observer'].map( (r) =>
+							{this.props.roles.map( (r) =>
 							<label key={r}>
 								<input type="checkbox" 
 									onClick={this.props.onRoleChange.bind(this, 'A', 'client', r)}
@@ -35,7 +35,7 @@ class Acl extends Component {
 				<div className="acl__project" key={p.title}>
 					<div className="acl__project__details">
 					<h1>Project {p.title}</h1>
-					{['admin', 'researcher', 'observer'].map( (r) =>
+					{this.props.roles.map( (r) =>
 					<label key={r}>
 						<input type="checkbox" 
 							onClick={this.props.onRoleChange.bind(this, p.title, 'project', r)}
@@ -59,7 +59,7 @@ class Acl extends Component {
 				<div className="acl__study">
 					<div className="acl__study__details" key={s.title}>
 						<h1>Study {s.title}</h1>
-							{['admin', 'researcher', 'observer'].map((r)=>
+							{this.props.roles.map((r)=>
 								<label key={r.title}>
 								<input 
 									type="checkbox" 

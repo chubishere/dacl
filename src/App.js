@@ -4,13 +4,17 @@ import Graph from './Graph.js';
 import Acl from './Acl.js';
 import UsersList from './UsersList.js';
 import DataUsers from './DataUsers.js';
+import DataRoles from './DataRoles.js';
 import './App.css';
 
 class App extends Component {
 
 	constructor(props){
 		super(props);
-		this.state = DataUsers;
+		this.state = { 
+			users: DataUsers,
+			roles: DataRoles,
+		}
 	}
 
 	onBlock(project){
@@ -96,6 +100,7 @@ class App extends Component {
 				<div>
 				<UsersList users={this.state.users} />
 				<Acl user={this.state.users[0]}
+					roles={this.state.roles}
 					onRoleChange={this.onRoleChange.bind(this)}
 					lookup={this.lookup.bind(this)}
 				/>
