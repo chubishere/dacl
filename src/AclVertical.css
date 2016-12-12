@@ -1,0 +1,38 @@
+.acl-vertical td {
+	line-height: 2.25;
+	border: 1px solid white;
+}
+
+.acl-vertical td:not(:first-child) {
+	text-align: center;
+	min-width: 90px;
+}
+
+.acl-vertical td:first-child {
+	padding-right: 1em;
+}
+
+.acl-vertical__roles td:not(:first-child),
+.acl-vertical__client td {
+	background-color: #d3ecca;
+}
+
+.acl-vertical__project td {
+	background-color: #e4f7dd;
+}
+
+.acl-vertical__study td {
+	background-color: #f2fbef;
+}
+
+.acl-vertical__client td:first-child {
+	padding-left: 1em;
+}
+
+.acl-vertical__project td:first-child {
+	padding-left: 2em;
+}
+
+.acl-vertical__study td:first-child {
+	padding-left: 3em;
+}

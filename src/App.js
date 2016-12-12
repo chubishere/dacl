@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Graph from './Graph.js';
-import Acl from './Acl.js';
+import AclVertical from './AclVertical.js';
 import UsersList from './UsersList.js';
 import DataUsers from './DataUsers.js';
 import DataRoles from './DataRoles.js';
@@ -29,7 +29,8 @@ class App extends Component {
 
 				<div className="app__right">
 					<UsersList users={this.state.users} />
-					<Acl user={this.state.users[0]}
+					<AclVertical 
+						user={this.state.users[0]}
 						roles={this.state.roles}
 						onRoleChange={this.onRoleChange.bind(this)}
 						lookup={this.lookup.bind(this)}
@@ -50,68 +51,83 @@ class App extends Component {
 		//this.setState(this.state);
 	}
 
-	onRoleChange(project, target, role){
+	//onRoleChange(project, target, role){
+	onRoleChange(userEmail, cpsName, cpsType, role){
 		// copy state
 		let state = JSON.parse( JSON.stringify( this.state ) );
 
-		// update state
-		let client = state.users[0].clients[0];
+		// find user
+		let user = _.find( state.users, (u) => u.email === userEmail );
+		if( !user ) return false;
 
-		if( target === 'client' ){
-			client.roles = (client.roles || []);
-			let index = client.roles.indexOf( role );
-			if( index === -1 ) {
-				client.roles.push( role );
-			}else{
-				client.roles.splice( index, 1 );
-			}
-			this.setState(state);
-			return;
+		let hasRole = (x) => ((x || {}).roles || []).indexOf( role ) > -1;
+		var target;
+
+		// find client
+		if( cpsType === 'client' ){
+			target = user.clients.filter( (c) => c.name === cpsName )[0] || target;
 		}
 
-		let p = _.findIndex( client.projects, (o) => o.title === project );
-
-		if( target === 'project' ){
-			client.projects[p].roles = (client.projects[p].roles || []);
-			let index = client.projects[p].roles.indexOf( role );
-			if( index === -1 ) {
-				client.projects[p].roles.push( role );
-			}else{
-				client.projects[p].roles.splice( index, 1 );
-			}
-			this.setState(state);
-			return;
+		// find project
+		if( cpsType === 'project' ){
+			let clientMatched;
+			let projectMatched;
+			user.clients.forEach( (c) => {
+				target = c.projects.filter( (p) => p.name === cpsName )[0] || target;
+			});
 		}
 
-		let s = _.findIndex( client.projects[p].studies, (o) => o.title === target )
-		let r = client.projects[p].studies[s].roles;
-		let rIndex = r.indexOf( role );
-		if( rIndex >= 0 ) { 			//if role exists, remove it
-			r.splice( rIndex, 1 );
-		}else{ 										//otherwise add it
-			r.push( role );
+		// find study
+		if( cpsType === 'study' ){
+			let clientMatched;
+			let projectMatched;
+			user.clients.forEach( (c) => {
+				c.projects.forEach( (p) => {
+					target = p.studies.filter( (s) => s.name === cpsName )[0] || target;
+				})
+			});
+		}
+
+		if( !target ) return;
+		if( hasRole(target) ){
+			target.roles.splice( target.roles.indexOf(role), 1 );
+		}else{
+			target.roles = target.roles || [];
+			target.roles.splice( target.roles.push(role) );
 		}
 
 		this.setState(state);
 	}
 
-	lookup(project, target, role){
-		var c = this.state.users[0].clients[0];
-		if( target === 'client' ){
-			return (c.roles || [] ).indexOf( role ) > -1;
+	lookup(userEmail, cpsName, cpsType, role) {
+
+		let user = _.find( this.state.users, (u) => u.email === userEmail );
+		if( !user ) return false;
+
+		let client, project, study;
+
+		let hasRole = (x) => ((x || {}).roles || []).indexOf( role ) > -1;
+
+		if( cpsType === 'client' ) {
+			client = user.clients.filter( (x) => x.name === cpsName )[0] || client;
+			return hasRole(client);
 		}
 
-		if( project ) {
-			var p = _.find( c.projects, (o) => o.title === project );
-
-			if( target === 'project' ){
-				return (p.roles || []).indexOf( role ) > -1;
-			} else {
-				var s = _.find( p.studies, (o) => o.title === target );
-				return s.roles.indexOf(role) !== -1;
-			}
+		if( cpsType === 'project' ) {
+			user.clients.forEach( (c) => {
+				project = c.projects.filter( (x) => x.name === cpsName )[0] || project;
+			});
+			return hasRole(project);
 		}
-		return;
+
+		if( cpsType === 'study' ) {
+			user.clients.forEach( (c) => {
+				c.projects.forEach( (p) => {
+					study = p.studies.filter( (x) => x.name === cpsName )[0] || study;
+				});
+			});
+			return hasRole(study);
+		}
 	}
 
 	getRolesText(){

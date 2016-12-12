@@ -4,26 +4,43 @@ export default [
 		clients: [
 			{
 				id: 1,
-				name: 'A',
-				password: 'fredpass',
-				roles: [],
+				name: 'C-A',
+				password: 'apass',
+				roles: ['admin'],
 				projects: [
 					{
 						id: 1,
-						title: 'A',
-						roles: [],
+						name: 'P-A',
+						roles: ['researcher'],
 						studies: [
-							{ id: 1, title: 'A', roles: [] },
-							{ id: 2, title: 'B', roles: [] },
+							{ id: 1, name: 'S-A', roles: ['observer'] },
+							{ id: 2, name: 'S-B', roles: [] },
 						]
 					},
 					{
 						id: 2,
-						title: 'B',
+						name: 'P-B',
 						roles: [],
 						studies: [
-							{ id: 1, title: 'C', roles: []},
-							{ id: 2, title: 'D', roles: []},
+							{ id: 1, name: 'S-C', roles: []},
+							{ id: 2, name: 'S-D', roles: []},
+						]
+					}
+				]
+			},
+			{
+				id: 2,
+				name: 'C-B',
+				password: 'bpass',
+				roles: [],
+				projects: [
+					{
+						id: 1,
+						name: 'P-C',
+						roles: [],
+						studies: [
+							{ id: 1, name: 'S-E', roles: [] },
+							{ id: 2, name: 'S-F', roles: [] },
 						]
 					}
 				]
@@ -37,7 +54,7 @@ export default [
 			projects: [{
 				id: 1,
 				studies: [
-					{ id: 1, title: 'A', roles: ['admin'] }
+					{ id: 1, name: 'S-G', roles: ['admin'] }
 				]
 			}]
 		}]
@@ -49,7 +66,7 @@ export default [
 			projects: [{
 				id: 1,
 				studies: [
-					{ id: 1, title: 'A', roles: ['admin'] }
+					{ id: 1, name: 'S-H', roles: ['admin'] }
 				]
 			}]
 		}]
