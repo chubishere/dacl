@@ -105,6 +105,7 @@ class App extends Component {
 		if( !user ) return false;
 
 		let client, project, study;
+		console.log( client );
 
 		let hasRole = (x) => ((x || {}).roles || []).indexOf( role ) > -1;
 
@@ -115,18 +116,24 @@ class App extends Component {
 
 		if( cpsType === 'project' ) {
 			user.clients.forEach( (c) => {
+				if( project ) return;
 				project = c.projects.filter( (x) => x.name === cpsName )[0] || project;
+				client = project? c : null;
 			});
-			return hasRole(project);
+			return hasRole(project) || hasRole(client);
 		}
 
 		if( cpsType === 'study' ) {
 			user.clients.forEach( (c) => {
+				if( study ) return;
 				c.projects.forEach( (p) => {
+					if( study ) return;
 					study = p.studies.filter( (x) => x.name === cpsName )[0] || study;
+					project = study? p: null;
+					client = study? c: null;
 				});
 			});
-			return hasRole(study);
+			return hasRole(study) || hasRole(project) || hasRole(client);
 		}
 	}
 
