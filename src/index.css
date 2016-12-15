@@ -10,14 +10,18 @@ body {
 	overflow-y: scroll;
 }
 
+ul, ol {
+	margin: 0;
+}
+
+.hidden {
+	display: none;
+}
+
 .text-center {
 	text-align: center;
 }
 
 .text-top-cell {
 	vertical-align: top;
-}
-
-ul, ol {
-	margin: 0;
 }

@@ -17,6 +17,9 @@
 	background-color: #d3ecca;
 }
 
+.acl-vertical .acl-vertical__role-inherited {
+}
+
 .acl-vertical__project td {
 	background-color: #e4f7dd;
 }
@@ -35,4 +38,9 @@
 
 .acl-vertical__study td:first-child {
 	padding-left: 3em;
+}
+
+.acl-vertical .no-membership-manual,
+.acl-vertical .no-membership-inherited{
+	background: yellow;
 }

@@ -25,16 +25,30 @@ class App extends Component {
 					<label>Roles:</label><input type="text" defaultValue={this.getRolesText()} onKeyUp={this.onRoleDefinitionChange.bind(this)}/>
 				</div>
 
-				<Graph className="graph app__left" user={this.state.users[0]}/>
-
-				<div className="app__right">
-					<UsersList users={this.state.users} />
+				<div className="app__left">
+					<h2>Me:</h2>
 					<AclVertical 
 						user={this.state.users[0]}
 						roles={this.state.roles}
 						onRoleChange={this.onRoleChange.bind(this)}
-						lookup={this.lookup.bind(this)}
+						getRoleState={this.getRoleState.bind(this)}
 					/>
+				</div>
+
+				<div className="app__right">
+					<h2>Another user:</h2>
+					<AclVertical 
+						user={this.state.users[1]}
+						roles={this.state.roles}
+						onRoleChange={this.onRoleChange.bind(this)}
+						getRoleState={this.getRoleState.bind(this)}
+					/>
+					<div className="hidden">
+						<Graph className="graph app__left" user={this.state.users[0]}/>
+					</div>
+					<div className="hidden">
+						<UsersList users={this.state.users} />
+					</div>
 				</div>
 
       </div>
@@ -51,7 +65,6 @@ class App extends Component {
 		//this.setState(this.state);
 	}
 
-	//onRoleChange(project, target, role){
 	onRoleChange(userEmail, cpsName, cpsType, role){
 		// copy state
 		let state = JSON.parse( JSON.stringify( this.state ) );
@@ -60,15 +73,16 @@ class App extends Component {
 		let user = _.find( state.users, (u) => u.email === userEmail );
 		if( !user ) return false;
 
+		// logic we'll be reusing
 		let hasRole = (x) => ((x || {}).roles || []).indexOf( role ) > -1;
 		var target;
 
-		// find client
+		// find client and set as target
 		if( cpsType === 'client' ){
 			target = user.clients.filter( (c) => c.name === cpsName )[0] || target;
 		}
 
-		// find project
+		// find project and set as target
 		if( cpsType === 'project' ){
 			let clientMatched;
 			let projectMatched;
@@ -77,7 +91,7 @@ class App extends Component {
 			});
 		}
 
-		// find study
+		// find study and set as target
 		if( cpsType === 'study' ){
 			let clientMatched;
 			let projectMatched;
@@ -88,6 +102,7 @@ class App extends Component {
 			});
 		}
 
+		// update the target
 		if( !target ) return;
 		if( hasRole(target) ){
 			target.roles.splice( target.roles.indexOf(role), 1 );
@@ -96,22 +111,56 @@ class App extends Component {
 			target.roles.splice( target.roles.push(role) );
 		}
 
+		// if membership reduced, clear out roles no longer in scope
+		if( false && role === 'member' && target.roles.indexOf(role) === -1 ) {
+
+				target.roles = [];
+
+				switch( cpsType ){
+					case 'client':
+						target.roles = [];
+						target.projects.forEach( (p) => {
+							p.roles = [];
+							p.studies.forEach( (s) => {
+								s.roles = [];
+							});
+						});
+						break;
+					case 'project':
+						if( target.roles.indexOf(role) !== -1) break;
+						target.roles = [];
+						target.studies.forEach( (s) => {
+							s.roles = [];
+						});
+						break;
+					case 'study':
+						// no further action
+					default:
+				}
+		}
+
+		// update state
 		this.setState(state);
 	}
 
-	lookup(userEmail, cpsName, cpsType, role) {
+	getRoleState(userEmail, cpsName, cpsType, role) {
 
 		let user = _.find( this.state.users, (u) => u.email === userEmail );
-		if( !user ) return false;
+		if( !user ) return 'empty';
 
 		let client, project, study;
-		console.log( client );
+		let out;
 
-		let hasRole = (x) => ((x || {}).roles || []).indexOf( role ) > -1;
+		let hasRole = (x, roleName) => ((x || {}).roles || []).indexOf( roleName || role ) > -1;
 
 		if( cpsType === 'client' ) {
 			client = user.clients.filter( (x) => x.name === cpsName )[0] || client;
-			return hasRole(client);
+			if( role !== 'member' && !hasRole(client, 'member') ){
+				return hasRole(client)? 'no-membership-manual': 'no-membership-empty';
+			}
+			if( hasRole(client) ) {
+				return 'manual';
+			}
 		}
 
 		if( cpsType === 'project' ) {
@@ -120,7 +169,17 @@ class App extends Component {
 				project = c.projects.filter( (x) => x.name === cpsName )[0] || project;
 				client = project? c : null;
 			});
-			return hasRole(project) || hasRole(client);
+			if( role !== 'member' && !hasRole(project, 'member') && !hasRole(client, 'member') ){
+				if( hasRole(project) ) return 'no-membership-manual';
+				if( hasRole(client) )  return 'no-membership-inherited';
+				return 'no-membership-empty';
+			}
+			if( hasRole(client) ){
+				return 'inherited';
+			}
+			if( hasRole(project) ){
+				return 'manual';
+			}
 		}
 
 		if( cpsType === 'study' ) {
@@ -133,8 +192,21 @@ class App extends Component {
 					client = study? c: null;
 				});
 			});
-			return hasRole(study) || hasRole(project) || hasRole(client);
+			if( role !== 'member' && !hasRole(study, 'member') && !hasRole(project, 'member') && !hasRole(client, 'member') ){
+				if( hasRole(study) ) 	 return 'no-membership-manual';
+				if( hasRole(project) ) return 'no-membership-inherited';
+				if( hasRole(client) )  return 'no-membership-inherited';
+				return 'no-membership-empty';
+			}
+			if( hasRole(project) || hasRole(client) ) {
+				return 'inherited';
+			}
+			if( hasRole(study) ){
+				return 'manual';
+			}
 		}
+
+		return 'empty';
 	}
 
 	getRolesText(){

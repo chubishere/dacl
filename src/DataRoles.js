@@ -1,1 +1,1 @@
-export default ['admin', 'researcher', 'observer'];
+export default ['member', 'admin', 'researcher', 'observer'];

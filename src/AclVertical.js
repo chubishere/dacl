@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import classname from 'classname';
 import './AclVertical.css';
 
 class AclVertical extends Component {
@@ -39,19 +40,34 @@ class AclVertical extends Component {
 						key={i.type+'-'+i.name}
 						className={'acl-vertical__'+i.type}
 						>
-						<td>{_.upperFirst(i.type)} {_.upperFirst(i.name)}</td>
-						{this.props.roles.map( (r) =>
-						<td key={r}>
-							<input type="checkbox" 
-								onClick={this.props.onRoleChange.bind(this, this.props.user.email, i.name, i.type, r)}
-								checked={this.props.lookup(this.props.user.email, i.name, i.type, r)} 
-							/>
-						</td>
+						<td>{_.upperFirst(i.type)}&nbsp;{_.upperFirst(i.name).replace('-','_')}</td>
+						{this.props.roles.map( (r) => {
+							let roleState = this.props.getRoleState(this.props.user.email, i.name, i.type, r);
+							return (<td key={r}
+								className={roleState}
+							>
+								<input type="checkbox" 
+									onClick={this.props.onRoleChange.bind(this, this.props.user.email, i.name, i.type, r)}
+									checked={!roleState.match(/empty/)} 
+									disabled={roleState.match(/^no-membership-(inherited|empty)|^inherited/m)}
+								/>
+							</td>
+							)}
 						)}
 					</tr>
 				)}
 			</tbody>
 		)
+	}
+
+	isDisabled(cpsName, cpsType, role){
+		let roleState = this.props.getRoleState(this.props.user.email, cpsName, cpsType, role);
+		if(  roleState === 'inherited' 
+			|| roleState === 'no-membership'
+		) {
+			return true;
+		}
+		return false;
 	}
 
 	flattenAcl(clients){
