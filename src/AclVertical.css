@@ -1,3 +1,7 @@
+.acl-vertical table {
+	width: 100%;
+}
+
 .acl-vertical td {
 	line-height: 2.25;
 	border: 1px solid white;
@@ -14,18 +18,18 @@
 
 .acl-vertical__roles td:not(:first-child),
 .acl-vertical__client td {
-	background-color: #d3ecca;
+	background-color: #ACD9DD;
 }
 
 .acl-vertical .acl-vertical__role-inherited {
 }
 
 .acl-vertical__project td {
-	background-color: #e4f7dd;
+	background-color: #D1DBE8;
 }
 
 .acl-vertical__study td {
-	background-color: #f2fbef;
+	background-color: #ece4ec;
 }
 
 .acl-vertical__client td:first-child {
@@ -42,5 +46,10 @@
 
 .acl-vertical .no-membership-manual,
 .acl-vertical .no-membership-inherited{
-	background: yellow;
+	background: #ffff87;
+}
+
+.acl-vertical .no-view-rights{
+	opacity: 0.3;
+	text-decoration: line-through;
 }

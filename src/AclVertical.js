@@ -38,18 +38,19 @@ class AclVertical extends Component {
 				{this.flattenAcl(clients).map( (i) =>
 					<tr 
 						key={i.type+'-'+i.name}
-						className={'acl-vertical__'+i.type}
+						className={classname('acl-vertical__'+i.type, {'no-view-rights': !this.isViewable(i.name, i.type)})}
 						>
 						<td>{_.upperFirst(i.type)}&nbsp;{_.upperFirst(i.name).replace('-','_')}</td>
 						{this.props.roles.map( (r) => {
 							let roleState = this.props.getRoleState(this.props.user.email, i.name, i.type, r);
+							let disabled = roleState.match(/^no-membership-(inherited|empty)|^inherited/m);
 							return (<td key={r}
 								className={roleState}
+								onClick={disabled? null : this.props.onRoleChange.bind(this, this.props.user.email, i.name, i.type, r)}
 							>
 								<input type="checkbox" 
-									onClick={this.props.onRoleChange.bind(this, this.props.user.email, i.name, i.type, r)}
 									checked={!roleState.match(/empty/)} 
-									disabled={roleState.match(/^no-membership-(inherited|empty)|^inherited/m)}
+									disabled={disabled}
 								/>
 							</td>
 							)}
@@ -58,6 +59,15 @@ class AclVertical extends Component {
 				)}
 			</tbody>
 		)
+	}
+
+	isViewable(cpsName, cpsType){
+		if( !this.props.viewer ) return true;
+
+		let viewerHasAdmin = !this.props.getRoleState( this.props.viewer.email, cpsName, cpsType, 'admin' ).match(/empty/);
+		let viewerHasMembership = !this.props.getRoleState( this.props.viewer.email, cpsName, cpsType, 'membership' ).match(/empty/);
+		let iHaveMembership = !this.props.getRoleState( this.props.user.email, 	cpsName, cpsType, 'member' ).match(/empty/);
+		return viewerHasAdmin && iHaveMembership;
 	}
 
 	isDisabled(cpsName, cpsType, role){

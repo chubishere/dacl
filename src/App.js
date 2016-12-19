@@ -6,6 +6,7 @@ import UsersList from './UsersList.js';
 import DataUsers from './DataUsers.js';
 import DataRoles from './DataRoles.js';
 import './App.css';
+import './MessageBox.css';
 
 class App extends Component {
 
@@ -27,6 +28,9 @@ class App extends Component {
 
 				<div className="app__left">
 					<h2>Me:</h2>
+					<div className="message-box">
+						{this.userExplanation( this.state.users[0] ) || 'Start by giving yourself membership to a Client, Project, or Study'}
+					</div>
 					<AclVertical 
 						user={this.state.users[0]}
 						roles={this.state.roles}
@@ -36,9 +40,10 @@ class App extends Component {
 				</div>
 
 				<div className="app__right">
-					<h2>Another user:</h2>
+					<h2>My view of another user:</h2>
 					<AclVertical 
 						user={this.state.users[1]}
+						viewer={this.state.users[0]}
 						roles={this.state.roles}
 						onRoleChange={this.onRoleChange.bind(this)}
 						getRoleState={this.getRoleState.bind(this)}
@@ -141,6 +146,61 @@ class App extends Component {
 
 		// update state
 		this.setState(state);
+		this.updateUserExplanation( user );
+	}
+
+	userExplanation( user ) {
+		return (user.explanation || {} ).text;
+	}
+
+	flattenAcl(clients){
+		let acl = [];
+		clients.forEach( (c) => {
+			acl.push({ 
+				name:  c.name,
+				type:  'client',
+				roles: c.roles
+			});
+			c.projects.forEach( (p) => {
+				acl.push({ 
+					name:  p.name,
+					type:  'project',
+					roles: p.roles
+				});
+				p.studies.forEach( (s) =>
+					acl.push({ 
+						name:  s.name,
+						type:  'study',
+						roles: s.roles
+					})
+				)
+			})
+		});
+		return acl
+	}
+
+	updateUserExplanation( user ){
+
+		let text = '', action;
+
+		// has membership?
+		let m = this.flattenAcl( user.clients )
+			.reduce( (accumulated, cps) => {
+				return accumulated || cps.roles.length;
+			}, 0);
+
+		if( m ) {
+			 text += 'Membership cascades down the Client/Project/Study tree.\n\
+			 	Roles become available where membership has been assigned. See enabled checkboxes below:';
+		} else {
+			 text += 'Nothing is available until Membership is assigned';
+		}
+
+		if( text && text.length ){
+			user.explanation = {text:text, action:action};
+		} else {
+			user.explanation = {};
+		}
 	}
 
 	getRoleState(userEmail, cpsName, cpsType, role) {
